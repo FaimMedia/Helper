@@ -1,0 +1,24 @@
+{
+	"name": "faimmedia/helper",
+	"description": "Helper library with useful PHP scripts.",
+	"homepage": "https://github.com/FaimMedia/Helper",
+
+	"license": "MIT",
+
+	"authors": [{
+		"name": "Tim Peters",
+		"email": "info@faimmedia.nl",
+		"homepage": "https://faimmedia.nl",
+		"role": "Developer"
+	}],
+
+	"require": {
+		"php": "7.*"
+	},
+
+	"autoload": {
+		"psr-4": {
+			"FaimMedia\\Helper\\": "src/"
+		}
+	}
+}
