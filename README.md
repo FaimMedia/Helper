@@ -1,6 +1,6 @@
 # FaimMedia Helper library
 
-Helper library with useful scripts.
+Helper library with useful PHP scripts.
 
 ## Install
 
