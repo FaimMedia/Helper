@@ -9,6 +9,24 @@ use FaimMedia\Helper\Cli\Color;
 
 require dirname(__DIR__, 5) . '/vendor/autoload.php';
 
-echo Color::parse('This text is red colored', 'red');
-echo Color::parse('This background is red colored', null, 'red');
-echo Color::parse('This text is bold', null, null, true);
+// colors
+	$colors = [
+		'black',
+		'red',
+		'green',
+		'yellow',
+		'blue',
+		'purple',
+		'cyan',
+		'white',
+	];
+
+// output
+	foreach($colors as $color) {
+		echo Color::parse('This text is '.$color.' colored', $color);
+		echo PHP_EOL;
+		echo Color::parse('This background is '.$color.' colored', null, $color);
+		echo PHP_EOL;
+		echo Color::parse('This text is '.$color.' colored and bold', $color, null, true);
+		echo PHP_EOL;
+	}
