@@ -4,6 +4,19 @@ namespace FaimMedia\Helper\Cli;
 
 class Color {
 
+	protected static $_isCli;
+
+	/**
+	 * Check CLI mode
+	 */
+	protected static function isCli(): bool {
+		if(self::$_isCli === null) {
+			self::$_isCli = (php_sapi_name() == 'cli');
+		}
+
+		return self::$_isCli;
+	}
+
 	/**
 	 * Returns a parsed colored string for CLI output
 	 */
@@ -21,6 +34,11 @@ class Color {
 		];
 
 		$returnString = "";
+
+	// if not in CLI mode, ignore colors and output string directly
+		if(!self::isCli()) {
+			return $string;
+		}
 
 	// Check if given foreground color found
 		if(isset($colors[$foregroundColor])) {
