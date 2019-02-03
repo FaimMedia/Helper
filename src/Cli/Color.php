@@ -23,12 +23,12 @@ class Color {
 		$returnString = "";
 
 	// Check if given foreground color found
-		if (isset($colors[$foregroundColor])) {
+		if(isset($colors[$foregroundColor])) {
 			$returnString .= "\033[" . ($bold ? '1' : '0') . ';' . $colors[$foregroundColor] . "m";
 		}
 
 	// Check if given background color found
-		if (isset($colors[$backgroundColor])) {
+		if(isset($colors[$backgroundColor])) {
 			$returnString .= "\033[" . ($colors[$backgroundColor] + 10) . "m";
 		}
 
