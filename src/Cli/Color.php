@@ -7,7 +7,7 @@ class Color {
 	/**
 	 * Returns a parsed colored string for CLI output
 	 */
-	public static function parse($string, $foregroundColor = null, $backgroundColor = null, $bold = false) {
+	public static function parse(string $string, string $foregroundColor = null, string $backgroundColor = null, bool $bold = false): string {
 	// Set up shell colors
 		$colors = [
 			'black'  => 30,
