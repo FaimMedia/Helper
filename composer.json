@@ -16,6 +16,11 @@
 		"php": "7.*"
 	},
 
+	"suggest": {
+		"php-curl" : "Required for using SparkPost with Mail wrapper class",
+		"phpmailer/phpmailer": "Required for using PHPMailer with Mail wrapper class"
+	},
+
 	"autoload": {
 		"psr-4": {
 			"FaimMedia\\Helper\\": "src/"
