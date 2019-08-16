@@ -296,6 +296,12 @@ class SparkPost implements MailInterface {
 		return [
 			'recipients' => $recipients,
 			'content'    => $content,
+			'options'    => [
+
+			// @todo: build option for this
+				'open_tracking'  => false,
+				'click_tracking' => false,
+			],
 		];
 	}
 
