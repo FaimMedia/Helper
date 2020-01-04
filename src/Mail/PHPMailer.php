@@ -4,13 +4,15 @@ namespace FaimMedia\Helper\Mail;
 
 use FaimMedia\Helper\Mail\MailInterface;
 
-use PHPMailer as PHPMailerClient;
+use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient,
+    PHPMailer\PHPMailer\SMTP;
 
 use FaimMedia\Helper\Mail\Exception as MailException;
 
 class PHPMailer implements MailInterface {
 
 	protected $_mail;
+	protected $_debug = false;
 
 	/**
 	 * Constructor
@@ -46,33 +48,50 @@ class PHPMailer implements MailInterface {
 	/**
 	 * Set config
 	 */
-	protected function setMailConfig(obj $config) {
+	protected function setMailConfig(object $config) {
 		$port = 587;
+		$sendmail = false;
 
-		$fields = ['host', 'protocol', 'port', 'username', 'password', 'from', 'fromName'];
+		$fields = ['sendmail', 'host', 'protocol', 'port', 'username', 'password', 'from', 'fromName'];
 		foreach($fields as $field) {
+			if(!isset($config->$field)) {
+				continue;
+			}
+
 			$$field = $config->$field;
+		}
+
+		if(isset($config['_debug'])) {
+			$this->_debug = $config['_debug'];
 		}
 
 		$mail = $this->getMail();
 
+		if($this->_debug) {
+			$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+		}
+
 		$mail->CharSet = 'utf-8';
 
-		$mail->Host = $host;
-		$mail->Port = $port;
-		$mail->SMTPAuth = true;
-		$mail->SMTPSecure = $protocol;
+		if(!$sendmail) {
+			$mail->Host = $host;
+			$mail->Port = $port;
+			$mail->SMTPAuth = true;
+			$mail->SMTPSecure = $protocol;
 
-		$mail->Username = $username;
-		$mail->Password = $password;
+			$mail->Username = $username;
+			$mail->Password = $password;
 
-		$mail->isSMTP();
+			$mail->isSMTP();
+		} else {
+			$mail->isSendmail();
+		}
 	}
 
 	/**
 	 * Set sender
 	 */
-	public function setFrom(string $from, string $fromName = null): parent {
+	public function setFrom(string $from, string $fromName = null): self {
 		if($fromName) {
 			$this->getMail()->setFrom($from, $fromName);
 		} else {
@@ -85,10 +104,14 @@ class PHPMailer implements MailInterface {
 	/**
 	 * Set reply to
 	 */
-	public function setReplyTo(string $from): self {
-		$this->getMail()->ReturnPath = $from;
+	public function setReplyTo(string $replyTo, string $replyToName = null): self {
+		$this->getMail()->ReturnPath = $replyTo;
 
-		$this->getMail()->addCustomHeader('In-Reply-To', '<' . $from . '>');
+		if($replyToName) {
+			$replyToName .= ' ';
+		}
+
+		$this->getMail()->addCustomHeader('In-Reply-To', $replyToName.' <' . $replyTo . '>');
 
 		return $this;
 	}
@@ -162,7 +185,7 @@ class PHPMailer implements MailInterface {
 	 */
 	public function send(): bool {
 		if(!$this->getMail()->send()) {
-			if($this->config->debug) {
+			if($this->_debug) {
 				throw new MailException($this->getMail()->ErrorInfo);
 			}
 
