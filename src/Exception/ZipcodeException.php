@@ -8,5 +8,6 @@ use Exception;
  * Zipcode Exception class
  */
 class ZipcodeException extends Exception {
-	const EMPTY_CHARACTER = -1;
+	const INVALID_CHARACTER = -1;
+	const INVALID_POSITION = -2;
 }
