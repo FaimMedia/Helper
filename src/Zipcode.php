@@ -33,7 +33,7 @@ class Zipcode {
 
 		foreach($formats as $format) {
 			if(!isset($format['character'])) {
-				throw new ZipcodeException('Character field is not set', ZipcodeException::INVALID_CHARACTER);
+				$format['character'] = '';
 			}
 
 			if(!isset($format['position'])) {
@@ -42,7 +42,7 @@ class Zipcode {
 
 			$args = [
 				$zipcode,
-				(!empty($format['character'])) ? $format['character'] : ' ',
+				$format['character'],
 				$format['position'] + $offset,
 				0,
 			];
