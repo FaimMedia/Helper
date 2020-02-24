@@ -98,6 +98,17 @@ class SparkPost implements MailInterface {
 	}
 
 	/**
+	 * Clear all receivers
+	 */
+	public function clearReceivers(): self {
+		$this->_receivers = [];
+		$this->_cc = [];
+		$this->_bcc = [];
+
+		return $this;
+	}
+
+	/**
 	 * Set Cc
 	 */
 	public function addCc(string $address, $name = null): self {

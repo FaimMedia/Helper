@@ -83,6 +83,15 @@ abstract class AbstractPHPMailer implements MailInterface {
 	}
 
 	/**
+	 * Clear receivers
+	 */
+	public function clearReceivers(): self {
+		$this->getMail()->clearAllRecipients();
+
+		return $this;
+	}
+
+	/**
 	 * Set Cc
 	 */
 	public function addCc(string $address, $name = null): self {

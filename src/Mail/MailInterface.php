@@ -34,6 +34,11 @@ interface MailInterface {
 	public function addReceiver(string $address, $name = null);
 
 	/**
+	 * Clear receivers
+	 */
+	public function clearReceivers();
+
+	/**
 	 * Set mail CC receivers
 	 */
 	public function addCc(string $address, $name = null);
