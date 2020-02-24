@@ -9,6 +9,7 @@ interface MailInterface {
 
 	const TYPE_SMTP = 1;
 	const TYPE_SPF = 2;
+	const TYPE_SENDMAIL = 3;
 
 	public function __construct(object $config);
 

@@ -4,12 +4,14 @@ namespace FaimMedia\Helper\Mail;
 
 use FaimMedia\Helper\Mail\MailInterface;
 
-use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient,
-    PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 
 use FaimMedia\Helper\Mail\Exception as MailException;
 
-class PHPMailer implements MailInterface {
+/**
+ * Use PHPMailer sendmail implementation
+ */
+abstract class AbstractPHPMailer implements MailInterface {
 
 	protected $_mail;
 	protected $_debug = false;
@@ -23,11 +25,9 @@ class PHPMailer implements MailInterface {
 	}
 
 	/**
-	 * Get type
+	 * Set config abstract method
 	 */
-	public function getType(): int {
-		return self::TYPE_SMTP;
-	}
+	abstract protected function setMailConfig(object $config);
 
 	/**
 	 * Set the mail object
@@ -43,49 +43,6 @@ class PHPMailer implements MailInterface {
 	 */
 	protected function getMail() {
 		return $this->_mail;
-	}
-
-	/**
-	 * Set config
-	 */
-	protected function setMailConfig(object $config) {
-		$port = 587;
-		$sendmail = false;
-
-		$fields = ['sendmail', 'host', 'protocol', 'port', 'username', 'password', 'from', 'fromName'];
-		foreach($fields as $field) {
-			if(!isset($config->$field)) {
-				continue;
-			}
-
-			$$field = $config->$field;
-		}
-
-		if(isset($config['_debug'])) {
-			$this->_debug = $config['_debug'];
-		}
-
-		$mail = $this->getMail();
-
-		if($this->_debug) {
-			$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-		}
-
-		$mail->CharSet = 'utf-8';
-
-		if(!$sendmail) {
-			$mail->Host = $host;
-			$mail->Port = $port;
-			$mail->SMTPAuth = true;
-			$mail->SMTPSecure = $protocol;
-
-			$mail->Username = $username;
-			$mail->Password = $password;
-
-			$mail->isSMTP();
-		} else {
-			$mail->isSendmail();
-		}
 	}
 
 	/**
@@ -194,14 +151,5 @@ class PHPMailer implements MailInterface {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Close SMTP connection
-	 */
-	public function __destruct() {
-		if($this->getMail()->SMTPKeepAlive) {
-			$this->getMail()->SmtpClose();
-		}
 	}
 }
