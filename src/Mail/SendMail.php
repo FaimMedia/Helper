@@ -25,6 +25,10 @@ class SendMail extends AbstractPHPMailer implements MailInterface {
 	 */
 	protected function setMailConfig(object $config) {
 
+		$mail = $this->getMail();
+		$mail->CharSet = 'utf-8';
+
+	// set fields
 		$fields = ['from', 'fromName'];
 		foreach($fields as $field) {
 			if(!isset($config->$field)) {
@@ -34,9 +38,13 @@ class SendMail extends AbstractPHPMailer implements MailInterface {
 			$$field = $config->$field;
 		}
 
-		$mail = $this->getMail();
+		if(isset($fromName)) {
+			$mail->FromName = $fromName;
+		}
 
-		$mail->CharSet = 'utf-8';
+		if(isset($from)) {
+			$mail->From = $from;
+		}
 
 		$mail->isSendmail();
 	}
